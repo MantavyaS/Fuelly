@@ -1,50 +1,148 @@
-# Welcome to your Expo app 👋
+# Fuelly 🔥🍎
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Fuelly is a full-stack mobile application that allows users to search foods using the USDA FoodData Central API, log consumed foods, and track daily calorie intake through a clean dashboard experience.
 
-## Get started
+This project was built to demonstrate real-world full-stack architecture using a custom backend rather than relying on backend-as-a-service abstractions.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- Search foods using the USDA FoodData Central API
+- Log foods to a persistent PostgreSQL database
+- View calorie intake on a dashboard computed from logged foods
+- Mobile-first UI built with React Native (Expo)
+- Automatic refresh when navigating between screens
+- Device-based user identification (no authentication required for MVP)
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🏗 Architecture Overview
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+React Native App (Expo)  
+↓ GraphQL  
+Apollo Server (Node.js)  
+↓ SQL  
+PostgreSQL (Supabase)  
+↓  
+USDA FoodData Central API  
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- The frontend communicates **only** with the GraphQL server
+- The backend handles:
+  - External API requests
+  - Database reads and writes
+- Supabase is used **only as hosted PostgreSQL**, not as a backend framework
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 🧰 Tech Stack
 
-```bash
-npm run reset-project
-```
+### Frontend
+- React Native
+- Expo
+- Apollo Client
+- TypeScript
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Backend
+- Node.js
+- Apollo Server (GraphQL)
+- PostgreSQL
+- pg (node-postgres)
 
-## Learn more
+### Database
+- PostgreSQL (Supabase-hosted)
 
-To learn more about developing your project with Expo, look at the following resources:
+### External API
+- USDA FoodData Central API
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 📁 Project Structure
 
-Join our community of developers creating universal apps.
+fuelly/
+├── app/                # Expo Router screens
+│   ├── (tabs)/         # Home & Search screens
+│   ├── styles/         # Shared styles
+│   └── types/          # TypeScript models
+├── components/         # Reusable UI components
+├── hooks/              # Shared logic (device-based user ID)
+├── backend/            # Apollo GraphQL server
+│   ├── server.js
+│   ├── db.js
+│   └── package.json
+└── README.md
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 🔑 Environment Variables
+
+Create a .env file inside the backend/ directory:
+
+USDA_API_KEY=your_usda_api_key  
+DATABASE_URL=your_supabase_postgres_connection_string  
+
+.env files are intentionally ignored by Git to protect secrets.
+
+---
+
+## 🚀 Running the Project Locally
+
+### Backend
+
+cd backend  
+npm install  
+node server.js  
+
+The GraphQL server runs on:  
+http://localhost:4000
+
+---
+
+### Frontend
+
+npm install  
+npx expo start  
+
+Run the app on:
+- iOS Simulator
+- Android Emulator
+- Physical device using Expo Go
+
+---
+
+## 📌 Implementation Notes
+
+- User identity is generated once per device and stored locally
+- Logged foods are persisted in PostgreSQL
+- Dashboard totals are computed client-side from logged foods
+- Designed for easy extension (macros, dates, authentication, charts)
+
+---
+
+## 📈 Future Improvements
+
+- Store macronutrients (protein, carbs, fats) in the database
+- Daily log grouping and historical views
+- User authentication (Supabase Auth or Firebase)
+- Weekly/monthly trend charts
+- Backend deployment to cloud infrastructure
+
+---
+
+## 🧠 Why This Project Matters
+
+Fuelly avoids backend-as-a-service shortcuts and instead demonstrates:
+- Custom GraphQL API design
+- Secure database connectivity
+- Real data persistence
+- Clean frontend/backend separation
+
+This reflects how production-grade mobile applications are commonly built in industry.
+
+---
+
+## 👤 Author
+
+Mantavya Sethi  
+Computer Engineering Student  
+University of Waterloo

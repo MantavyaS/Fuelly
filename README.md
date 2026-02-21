@@ -20,8 +20,11 @@ Built to demonstrate real-world production architecture using a custom backend a
 
 ## 🎥 Screenshots
 
-![Home Screen](./screenshots/HomeScreen.png)
-![Search Screen](./screenshots/SearchScreen.png) 
+<p align="center">
+  <img src="./screenshots/HomeScreen.png" width="260" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="./screenshots/SearchScreen.png" width="260" />
+</p>
 
 ---
 

@@ -1,4 +1,4 @@
-import { Food } from '@/app/types/Food';
+import { Food } from "@/app/types/Food";
 import FoodListItem from "@/components/FoodListItem";
 import { useUserId } from "@/hooks/useUserid";
 import { gql } from "@apollo/client";

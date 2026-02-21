@@ -1,45 +1,51 @@
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import 'dotenv/config';
+import { expressMiddleware } from "@as-integrations/express4";
+
 import fetch from "node-fetch";
 import { pool } from "./db.js";
 
+// optional: quick startup DB check
 pool.query("select 1")
-  .then(() => console.log("✅ Supabase DB connected"))
-  .catch(err => console.error("❌ DB connection failed", err));
+  .then(() => console.log("Supabase DB connected"))
+  .catch(err => console.error("DB connection failed", err));
 
 const typeDefs = `
-    type Food {
-        id: ID!
-        name: String!
-        quantity: String
-        calories: Float
-        protein: Float
-        carbs: Float
-        fats: Float
-    }
-    type Query {
-        searchFood(query: String!, amount: Float): [Food]
-        foodLogs(user_id: String!): [FoodLog]
-    }
+  type Food {
+    id: ID!
+    name: String!
+    quantity: String
+    calories: Float
+    protein: Float
+    carbs: Float
+    fats: Float
+  }
 
-    type FoodLog {
-        id: ID!
-        user_id: String
-        food_id: String
-        label: String
-        kcal: Int
-        created_at: String
-    }
+  type FoodLog {
+    id: ID!
+    user_id: String
+    food_id: String
+    label: String
+    kcal: Int
+    created_at: String
+  }
 
-    type Mutation {
+  type Query {
+    searchFood(query: String!, amount: Float): [Food]
+    foodLogs(user_id: String!): [FoodLog]
+  }
+
+  type Mutation {
     addFoodLog(
-        user_id: String!
-        food_id: String
-        label: String!
-        kcal: Int!
+      user_id: String!
+      food_id: String
+      label: String!
+      kcal: Int!
     ): FoodLog
-    }
+  }
 `;
 
 const resolvers = {
@@ -98,13 +104,29 @@ const resolvers = {
   },
 };
 
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-const server = new ApolloServer({
-    typeDefs, resolvers
+// ✅ Health route: no writes, just keeps DB connection warm
+app.get("/health", async (req, res) => {
+  try {
+    await pool.query("select 1");
+    res.status(200).json({ ok: true, db: "up" });
+  } catch (err) {
+    res.status(503).json({ ok: false, db: "down" });
+  }
 });
 
-const { url } = await startStandaloneServer(server, {
-    listen: {port: 4000},
-});
+// Apollo server
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+await apolloServer.start();
 
-console.log(`Server running at: ${url}`);
+// GraphQL endpoint (you can keep it "/" if you want, but /graphql is standard)
+app.use("/graphql", expressMiddleware(apolloServer));
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`GraphQL ready at http://localhost:${PORT}/graphql`);
+  console.log(`Health check at http://localhost:${PORT}/health`);
+});

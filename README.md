@@ -2,7 +2,7 @@
 
 Fuelly is a full-stack mobile application that allows users to search foods using the USDA FoodData Central API, log consumed foods, and track daily calorie intake through a clean dashboard experience.
 
-This project was built to demonstrate real-world full-stack architecture using a custom backend rather than relying on backend-as-a-service abstractions.
+Built to demonstrate real-world production architecture using a custom backend and cloud deployment.
 
 ---
 
@@ -14,6 +14,24 @@ This project was built to demonstrate real-world full-stack architecture using a
 - Mobile-first UI built with React Native (Expo)
 - Automatic refresh when navigating between screens
 - Device-based user identification (no authentication required for MVP)
+
+---
+
+
+## 🎥 Screenshots
+
+![Home Screen](./screenshots/HomeScreen.png)
+![Search Screen](./screenshots/SearchScreen.png) 
+
+---
+
+## 🎥 Demo
+
+👉 **Watch 45-second demo:**  
+https://youtube.com/shorts/AzNXy2UOa9s?feature=share
+
+**Backend GraphQL Endpoint:**  
+https://fuelly-bf8i.onrender.com/graphql  
 
 ---
 
@@ -35,6 +53,16 @@ USDA FoodData Central API
 
 ---
 
+### Key Design Decisions
+
+- Frontend communicates exclusively with a custom GraphQL API  
+- Backend handles external API orchestration and database operations  
+- Supabase is used strictly as hosted PostgreSQL (not as a backend framework)  
+- Backend deployed to Render with production environment configuration  
+- Health endpoint implemented to support uptime monitoring  
+
+---
+
 ## 🧰 Tech Stack
 
 ### Frontend
@@ -45,32 +73,15 @@ USDA FoodData Central API
 
 ### Backend
 - Node.js
+- Express
 - Apollo Server (GraphQL)
-- PostgreSQL
+- PostgreSQL (Supabase hosted)
 - pg (node-postgres)
 
-### Database
-- PostgreSQL (Supabase-hosted)
-
-### External API
+### Infrastructure
+- Render (Cloud Deployment)
+- Supabase (Hosted PostgreSQL)
 - USDA FoodData Central API
-
----
-
-## 📁 Project Structure
-
-fuelly/
-├── app/                # Expo Router screens
-│   ├── (tabs)/         # Home & Search screens
-│   ├── styles/         # Shared styles
-│   └── types/          # TypeScript models
-├── components/         # Reusable UI components
-├── hooks/              # Shared logic (device-based user ID)
-├── backend/            # Apollo GraphQL server
-│   ├── server.js
-│   ├── db.js
-│   └── package.json
-└── README.md
 
 ---
 
@@ -94,7 +105,7 @@ npm install
 node server.js  
 
 The GraphQL server runs on:  
-http://localhost:4000
+http://localhost:4000/graphql
 
 ---
 
@@ -125,7 +136,6 @@ Run the app on:
 - Daily log grouping and historical views
 - User authentication (Supabase Auth or Firebase)
 - Weekly/monthly trend charts
-- Backend deployment to cloud infrastructure
 
 ---
 

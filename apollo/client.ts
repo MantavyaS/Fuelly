@@ -1,7 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
 const link = new HttpLink({
-  uri: "https://reverable-unlaureled-deloras.ngrok-free.dev/graphql",
+  uri: "https://fuelly-bf8i.onrender.com/graphql",
 });
 
 const client = new ApolloClient({

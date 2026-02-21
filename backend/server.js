@@ -5,7 +5,6 @@ import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express4";
 
-import fetch from "node-fetch";
 import { pool } from "./db.js";
 
 // optional: quick startup DB check
